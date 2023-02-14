@@ -1,5 +1,5 @@
 ---
-title: "wwpapers"
+title: "Wilford Woodruff Papers Stories"
 listing:
   contents: posts
   sort: "date desc"
