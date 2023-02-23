@@ -6,108 +6,56 @@ library(stringr)
 raw <- read_csv("https://raw.githubusercontent.com/BYUIDSconsulting/woodruff_stories/master/data/raw/2022-12-12-wwp-pages-export.csv")
 View(raw)
 
-transcripts <- raw %>% 
-  drop_na(`Text Only Transcript`)
-View(transcripts)
-
-table(transcripts$Name)
-
-
-page1 <- transcripts %>% 
-  filter(Name == "page_0001")
-View(page1)
-# maybe page_0001 means first page in that entry
-
-
-journals <- transcripts %>% 
-  filter(`Document Type` == "Journals")
-View(journals)
-
-
-
-journals2 <- journals %>% 
-  group_by(`Parent ID`) %>% 
-  arrange(Name) %>% 
-  summarize(compiled = paste(`Text Only Transcript`, collapse = ";new_page"))
-View(journals2)
-
-
-table(journal$Name)
-
-sjournal <- journal %>% 
-  filter(`Parent ID` == "5157")
-View(sjournal)
-
-table(sjournal$Name)
-
-sj <- sjournal %>% 
-  select(`Internal ID`, Name, `Original Transcript`, `Text Only Transcript`)
-View(sj)
-sj$new_date <- NA
-
-## make UDF for extracting dates
-
-s <- "I have this: 180-4"
-
-# e_sj <- extract(
-#   sj,
-#   col = "Original Transcript",
-#   into = "new_date",
-#   regex = "(\\d)"
-#   )
-# View(e_sj)
-
-f_sj <- sj %>% 
-  mutate(new_date = str_extract(
-    string = `Original Transcript`,
-    pattern = "when='\d+-\d+-\d+'"
-  ))
-View(f_sj)
-
-bob <- paste(sj$`Text Only Transcript`, collapse = ';')
-bob
-
-
 
 
 all_journals <- raw %>% 
   filter(`Document Type` == "Journals")
-View(all_j)
-
-# external text file
-
-txtf <- read.delim("https://raw.githubusercontent.com/BYUIDSconsulting/woodruff_stories/master/data/raw/WWJ_Final_djvu.txt")
-View(txtf)
-
-df <- read.table("https://raw.githubusercontent.com/BYUIDSconsulting/woodruff_stories/master/data/raw/WWJ_Final_djvu.txt", sep = "\t")
-View(df)
-
-# df$open[grepl("^\\d", df$V1)] <- 1
-# View(df)
-
-df2 <- df %>% 
-  mutate(start = ifelse(
-    grepl("^\\d", df$V1), "yes", "no"
-  ))
-View(df2)
+View(all_journals)
 
 
 
-# trying to make new collpsed string
+# trying to make new collapsed string
 
-View(raw)
-
-sorted <- raw %>% 
+sorted <- all_journals %>% 
   arrange(`Internal ID`)
-View(collapsed)
+View(sorted)
 
-full_text <- str_c(sorted$`Text Only Transcript`, sep = "", collapse=NULL)
-View(full_text)
-full_text
 
-sub_text <- substring(full_text, 0, 5)
-sub_text
+## paste method
+n_full_text <- paste(sorted$`Text Only Transcript`, collapse = "")
+n_full_text
+View(n_full_text)
 
-str_view_all(full_text, pattern="\\d")
 
-str_extract_all()
+sub_text1 <- substring(n_full_text, 0, 25000000)
+sub_text1
+
+sub_text2 <- substring(n_full_text, 25000001, -1)
+sub_text2
+
+strsplit(sub_text, split="\\d+", perl = TRUE)
+
+
+pattern_trey <- "(([J|F|M|A|J|S|O|N|D][a-z]{3,8}\\s){1,2}\\d{1,2}(th|st|rd|nd)?,?(\\s\\d{4})?|[J|F|M|A|J|S|O|N|D][a-z]{3,8}\\s\\d{1,2}(th|st|rd|nd)?) ~"
+
+matches <- str_extract_all(n_full_text, pattern=pattern_trey) %>% unlist()
+
+matches2 <- append(matches, NA, after = 0)
+matches2
+
+text <- strsplit(n_full_text, split = pattern_trey) %>% unlist()
+
+# length(matches) <- length(text)
+
+papers <- data.frame(
+  date = matches2,
+  text = text
+)
+View(papers)
+
+
+
+
+
+
+

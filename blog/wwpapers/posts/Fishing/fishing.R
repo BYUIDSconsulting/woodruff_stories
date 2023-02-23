@@ -70,10 +70,11 @@ bob
 
 
 
-
-all_j <- raw %>% 
+all_journals <- raw %>% 
   filter(`Document Type` == "Journals")
 View(all_j)
+
+# external text file
 
 txtf <- read.delim("https://raw.githubusercontent.com/BYUIDSconsulting/woodruff_stories/master/data/raw/WWJ_Final_djvu.txt")
 View(txtf)
@@ -89,6 +90,10 @@ df2 <- df %>%
     grepl("^\\d", df$V1), "yes", "no"
   ))
 View(df2)
+
+
+
+# trying to make new collpsed string
 
 View(raw)
 
