@@ -53,6 +53,15 @@ papers <- data.frame(
 )
 View(papers)
 
+people_list <- paste(raw$People, collapse = ";") %>% unlist()
+people_list2 <- people_list[!is.na(people_list)]
+
+
+papers <- papers %>%
+  mutate(new_date = str_sub(papers$date, end= -2)) %>%
+  View()
+
+
 
 
 
