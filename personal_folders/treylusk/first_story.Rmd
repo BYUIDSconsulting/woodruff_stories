@@ -1,0 +1,30 @@
+
+```{r}
+library(tidyverse)
+```
+
+
+```{r}
+look<-read_csv('https://raw.githubusercontent.com/BYUIDSS/DSS_W23_Wilford_Woodruff_Papers/master/derived_data/journals.csv')
+```
+
+```{r}
+view(look)
+```
+
+```{r}
+caren <- read_csv("/Users/luskenterprises/consulting/agecon_slade_fa22/personal_folders/trey_lusk/wheat.csv")
+view(caren)
+```
+
+```{r}
+caren%>%
+  filter(str_contains('\\d'))
+```
+```{r}
+df%>%
+  mutate(new= datecolumn + fulltext)
+
+
+```
+
