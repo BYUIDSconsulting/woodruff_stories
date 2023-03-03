@@ -33,8 +33,6 @@ sub_text1
 sub_text2 <- substring(n_full_text, 25000001, -1)
 sub_text2
 
-strsplit(sub_text, split="\\d+", perl = TRUE)
-
 
 pattern_trey <- "(([J|F|M|A|J|S|O|N|D][a-z]{3,8}\\s){1,2}\\d{1,2}(th|st|rd|nd)?,?(\\s\\d{4})?|[J|F|M|A|J|S|O|N|D][a-z]{3,8}\\s\\d{1,2}(th|st|rd|nd)?) ~"
 
@@ -44,6 +42,7 @@ matches2 <- append(matches, NA, after = 0)
 matches2
 
 text <- strsplit(n_full_text, split = pattern_trey) %>% unlist()
+text
 
 # length(matches) <- length(text)
 
@@ -57,11 +56,15 @@ people_list <- paste(raw$People, collapse = ";") %>% unlist()
 people_list2 <- people_list[!is.na(people_list)]
 
 
-papers <- papers %>%
-  mutate(new_date = str_sub(papers$date, end= -2)) %>%
-  View()
+papers2 <- papers %>%
+  mutate(date = str_sub(papers$date, end= -2))
+View(papers2)
 
+## write out to files
 
+write.table(n_full_text, file = "../../data/derived/full_text.txt")
+
+write.table(papers2, file = "../../data/derived/papers.csv", row.names = TRUE)
 
 
 
