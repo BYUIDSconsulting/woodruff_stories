@@ -42,8 +42,9 @@ carl <- franklin %>% unlist()
 # This creates unique list
 new <-unique(carl)
 # This extracts from the text all things that match any names in the list and put it into a new column
-papers$names <- sapply(str_extract_all(papers$text, paste(franklin, collapse = "|")), 
+papers$names <- sapply(str_extract_all(papers$text, paste(new, collapse = "|")), 
                         paste, collapse = ", ")
+
 
 
 # This whole thing is the exact same code but done for the place 
@@ -61,3 +62,9 @@ newer <-unique(rose)
 
 papers$places <- sapply(str_extract_all(papers$text, paste(newer, collapse = "|")), 
                         paste, collapse = ", ")
+
+papers$date <- substring(papers$date, 1, nchar(papers$date) - 1)
+
+view(papers)
+
+write.csv(papers, "", row.names=FALSE)
